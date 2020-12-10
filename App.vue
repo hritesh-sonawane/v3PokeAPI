@@ -1,6 +1,5 @@
 <template>
     <div class="card">
-      <button @click="fetchData">Fetch</button>
         <div class="title">
             title
         </div>
@@ -23,6 +22,16 @@ const ids = [1, 4, 7]
           pokemon: null
         }
       },
+
+      // ! Lifecycle Hooks
+      created() {
+        this.fetchData()
+      },
+      // mounted() {
+      //   console.log('mounted')
+      //   console.log(this.$el)
+      // },
+
       methods: {
         async fetchData() {
           // ! for 1 fetch     
