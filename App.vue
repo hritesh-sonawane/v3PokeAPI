@@ -15,6 +15,8 @@
 
 <script>
 const api = 'https://pokeapi.co/api/v2/pokemon'
+const ids = [1, 4, 7]
+
     export default {
       data() {
         return {
@@ -23,13 +25,23 @@ const api = 'https://pokeapi.co/api/v2/pokemon'
       },
       methods: {
         async fetchData() {
-          const response = await window.fetch(`${api}/1`)
-          const data = await response.json()
-          const pokemon = {
-            name: data.name,
-            sprite: data.sprites.other['official-artwork'],
-            types: data.types.map(type => ({ name: type.type.name }))
-          }
+          // ! for 1 fetch     
+          // const response = await window.fetch(`${api}/1`)
+          // const data = await response.json()
+          // const pokemon = {
+          //   name: data.name,
+          //   sprite: data.sprites.other['official-artwork'].front_default,
+          //   types: data.types.map(type => ({ name: type.type.name }))
+          // }
+          // console.log(pokemon)
+          // ! for multiple fetch
+          const responses = await Promise.all(ids.map(id => window.fetch(`${api}/${id}`)))
+          const data = await Promise.all(responses.map(res => res.json()))
+          const pokemon = data.map(datum => ({
+            name: datum.name,
+            sprite: datum.sprites.other['official-artwork'].front_default,
+            types: datum.types.map(type => ({ name: type.type.name }))
+          }))
           console.log(pokemon)
         }
       }
